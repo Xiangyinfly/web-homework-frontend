@@ -28,8 +28,8 @@ const logout = async () => {
   <div class="tabbar-right">
     <el-button size="small" icon="Refresh" circle @click="refresh"></el-button>
     <el-button size="small" icon="FullScreen" circle @click="fullScreen"></el-button>
-    <el-button size="small" icon="Setting" circle></el-button>
-    <img :src="userStore.userInfo.avatar" style="width: 24px;height: 24px;margin:0 15px;border-radius: 50%">
+<!--    <el-button size="small" icon="Setting" circle></el-button>-->
+    <img :src="userStore.userInfo.image" style="width: 24px;height: 24px;margin:0 15px;border-radius: 50%">
     <el-dropdown>
         <span class="el-dropdown-link">
           {{userStore.userInfo.name}}

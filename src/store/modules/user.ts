@@ -1,6 +1,6 @@
 import {defineStore} from "pinia";
-import {LoginRequest, loginResponseData} from "@/api/user/types.ts";
-import {reqLogin, reqUserInfo, reqLogout} from "@/api/user";
+import {empInfo, empInfoResponse, LoginRequest, loginResponseData} from "@/api/user/types.ts";
+import {reqLogin, reqLogout, reqMyInfo} from "@/api/user";
 import {GET_TOKEN, REMOVE_TOKEN, SET_TOKEN} from "@/utils/token.ts";
 import { constantRoute } from "@/router/routes.ts";
 import {reactive, ref} from "vue";
@@ -9,33 +9,33 @@ export const useUserStore = defineStore("User",() => {
 
     let token = ref(GET_TOKEN())
     let menuRoutes = reactive(constantRoute)
-    let userInfo:any = reactive({})
+    let myInfo:empInfo = reactive({})
     const userLogin = async (data:LoginRequest) => {
         let res:loginResponseData = await reqLogin(data)
         if (res.code == 200) {
-            token.value = <string>(res.data)
+            token.value = <string>(res.data.token)
             //本地持久化存储
-            SET_TOKEN(<string>(res.data))
+            SET_TOKEN(<string>(res.data.token))
             return 'ok'
         } else {
-            return Promise.reject(new Error(res.data))
+            return Promise.reject(new Error(res.msg))
         }
     }
-    const getUserInfo = async () => {
-        let res = await reqUserInfo()
+    const getMyInfo = async () => {
+        let res:empInfoResponse = await reqMyInfo()
         if (res.code == 200) {
             //获取用户信息
-            Object.assign(userInfo,res.data)
+            Object.assign(myInfo,res.data)
             return 'ok'
         } else {
-            return Promise.reject(new Error(res.message))
+            return Promise.reject(new Error(res.msg))
         }
     }
     const userLogout = async () => {
         let res = await reqLogout()
         if (res.code == 200) {
             token.value = ''
-            Object.keys(userInfo).forEach(u => delete userInfo[u])
+            Object.keys(myInfo).forEach(u => delete myInfo[u])
             REMOVE_TOKEN()
             return 'ok'
         } else {
@@ -43,5 +43,5 @@ export const useUserStore = defineStore("User",() => {
         }
 
     }
-    return {token,menuRoutes,userInfo,userLogin,getUserInfo,userLogout}
+    return {token,menuRoutes,userInfo: myInfo,userLogin,userLogout,getUserInfo: getMyInfo}
 })

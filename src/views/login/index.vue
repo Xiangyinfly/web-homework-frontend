@@ -41,8 +41,8 @@ const rules = {
 }
 
 let loginData = reactive({
-  username:'admin',
-  password:'111111'
+  username:'jinyong',
+  password:'123456'
 })
 
 </script>
@@ -77,7 +77,7 @@ let loginData = reactive({
 .login_container {
   width: 100%;
   height: 100vh;
-  background: url('@/assets/images/background.png') no-repeat;
+  background: url('../../../public/background.png') no-repeat;
   background-size: cover;
 
   .login_form {
