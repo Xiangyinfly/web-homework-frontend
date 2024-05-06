@@ -32,6 +32,29 @@ export const constantRoute = [
         ]
     },
     {
+        path: '/classinfo',
+        component: () => import('@/layout/index.vue'),
+        name: 'ClassInfo',
+        redirect: '/classinfo/stu',
+        meta: {
+            title: '班级学生管理',
+            hidden: false,
+            icon: 'Goods',
+        },
+        children: [
+            {
+                path: '/classinfo/stu',
+                component: () => import('@/views/classinfo/stu/index.vue'),
+                name: 'Stu',
+                meta: {
+                    title: '学生管理',
+                    hidden: false,
+                    icon: 'Notebook'
+                }
+            }
+        ]
+    },
+    {
         path: '/systeminfo',
         component: () => import('@/layout/index.vue'),
         name: 'SystemInfo',

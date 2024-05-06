@@ -2,7 +2,7 @@
 import {reactive, ref} from 'vue'
 import {ElMessage, ElTable} from 'element-plus'
 import {Search} from "@element-plus/icons-vue";
-import {addEmp, getEmpById, reqEmpInfoList, reqUpload, updateEmp} from "@/api/emp";
+import {addEmp, deleteBatchEmp, deleteEmp, getEmpById, reqEmpInfoList, reqUpload, updateEmp} from "@/api/emp";
 import {AddEmpRequest, empInfo, empInfoList, empInfoListRequest, UpdateEmpRequest} from "@/api/emp/types.ts";
 import {AddDeptRequest, DeptInfoListResponse, ResponseResult} from "@/api/dept/types.ts";
 import {addDept, getDeptList} from "@/api/dept";
@@ -16,10 +16,7 @@ import { Picture as IconPicture } from '@element-plus/icons-vue'
 
 //获得职员信息列表
 const empTableRef = ref<InstanceType<typeof ElTable>>()
-const multipleSelection = ref([])
-const handleSelectionChange = (val) => {
-  multipleSelection.value = val
-}
+
 
 const genderOptions = [
   {
@@ -192,7 +189,7 @@ const empId = ref()
 let updateEmpRequest = ref<UpdateEmpRequest>({})
 const updateEmpForm = ref()
 const doGetEmpById = async () => {
-  let res = await getEmpById(empId.value)
+  let res:ResponseResult = await getEmpById(empId.value)
   if (res.code == 200) {
     updateEmpRequest.value = res.data as UpdateEmpRequest
   }
@@ -215,6 +212,38 @@ const doUpdateEmp = async () => {
 }
 
 
+// 删除员工
+const deleteDialog = ref(false)
+const doDeleteEmp = async () => {
+  deleteDialog.value = false
+  let res: ResponseResult = await deleteEmp(empId.value)
+  if (res.code == 200) {
+    await getEmpInfoList(1,10)
+    ElMessage.success("删除成功😊")
+  } else {
+    ElMessage.error("删除失败☹️")
+  }
+}
+
+// 批量删除
+const deleteBatchDialog = ref(false)
+const multipleSelection = ref<empInfo[]>([])
+const handleSelectionChange = (val) => {
+  multipleSelection.value = val
+}
+
+const doDeleteBatchEmp = async () => {
+  let empIds: number[] = []
+  multipleSelection.value.forEach(emp => empIds.push(emp.id as number))
+  let res: ResponseResult = await deleteBatchEmp(empIds)
+  if (res.code == 200) {
+    await getEmpInfoList(1,10)
+    ElMessage.success("批量删除成功😊")
+  } else {
+    ElMessage.error("批量删除失败☹️")
+  }
+}
+
 const rules = {
   username: [
     { required: true, min: 2, max: 10, message: '用户名应在2-10个字符🥺', trigger: 'change' }
@@ -234,46 +263,46 @@ const rules = {
 
 <template>
   <div>
-    <div class="flex gap-4 mb-4">
-
-      <span>姓名</span>
-      <el-input
-          v-model="empInfoListRequest.name"
-          style="width: 240px;margin-left: 10px"
-          placeholder="输入您的姓名"
-          :prefix-icon="Search"
-      />
-
-      <span style="margin-left: 40px">性别</span>
-      <el-select v-model="empInfoListRequest.gender" placeholder="选择性别" style="width: 240px;margin-left: 10px">
-        <el-option
-            v-for="item in genderOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-        />
-      </el-select>
-
-      <span style="margin-left: 40px">入职时间</span>
-      <el-date-picker
-          style="margin-left: 10px"
-          v-model="during"
-          format="YYYY-MM-DD"
-          value-format="YYYY-MM-DD"
-          type="daterange"
-          range-separator="To"
-          start-placeholder="最早时间"
-          end-placeholder="最晚时间"
-      />
-
-      <el-button type="primary" style="margin-left: 100px" @click="getEmpInfoList(empInfoListRequest.page,empInfoListRequest.pageSize)">查询</el-button>
-
-    </div>
-
-    <el-button type="primary" style="margin-bottom: 15px;margin-top: 15px" @click="addDialog = true;getDeptOptions()">新增员工</el-button>
-    <el-button type="danger" style="margin-bottom: 15px;margin-top: 15px">批量删除</el-button>
-
     <el-card>
+
+      <div class="flex gap-4 mb-4">
+
+        <span>姓名</span>
+        <el-input
+            v-model="empInfoListRequest.name"
+            style="width: 240px;margin-left: 10px"
+            placeholder="输入您的姓名"
+            :prefix-icon="Search"
+        />
+
+        <span style="margin-left: 40px">性别</span>
+        <el-select v-model="empInfoListRequest.gender" placeholder="选择性别" style="width: 240px;margin-left: 10px">
+          <el-option
+              v-for="item in genderOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+          />
+        </el-select>
+
+        <span style="margin-left: 40px">入职时间</span>
+        <el-date-picker
+            style="margin-left: 10px"
+            v-model="during"
+            format="YYYY-MM-DD"
+            value-format="YYYY-MM-DD"
+            type="daterange"
+            range-separator="To"
+            start-placeholder="最早时间"
+            end-placeholder="最晚时间"
+        />
+
+        <el-button type="primary" style="margin-left: 100px" @click="getEmpInfoList(empInfoListRequest.page,empInfoListRequest.pageSize)">查询</el-button>
+
+      </div>
+
+      <el-button type="primary" style="margin-bottom: 15px;margin-top: 15px" @click="addDialog = true;getDeptOptions()">新增员工</el-button>
+      <el-button type="danger" style="margin-bottom: 15px;margin-top: 15px" @click="deleteBatchDialog = true">批量删除</el-button>
 
       <el-table
           ref="empTableRef"
@@ -301,7 +330,7 @@ const rules = {
         <el-table-column align="center" fixed="right" label="操作" width="200">
           <template #default="scope">
             <el-button link type="primary" size="small" @click="updateDialog = true;empId = scope.row.id;getDeptOptions();doGetEmpById()">编辑</el-button>
-            <el-button link type="primary" size="small" @click="deleteDialog = true;deptId = scope.row.id">删除</el-button>
+            <el-button link type="primary" size="small" @click="deleteDialog = true;empId = scope.row.id">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -480,7 +509,33 @@ const rules = {
     </template>
   </el-dialog>
 
+  <el-dialog
+      v-model="deleteDialog"
+      title="⚠️ 删除员工"
+      width="500"
+  >
+    <span>确定要删除该员工？</span>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button @click="deleteDialog = false">取消</el-button>
+        <el-button type="primary" @click="doDeleteEmp">确定</el-button>
+      </div>
+    </template>
+  </el-dialog>
 
+  <el-dialog
+      v-model="deleteBatchDialog"
+      title="⚠️ 批量删除员工"
+      width="500"
+  >
+    <span>确定要删除这些员工？</span>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button @click="deleteBatchDialog = false">取消</el-button>
+        <el-button type="primary" @click="doDeleteBatchEmp">确定</el-button>
+      </div>
+    </template>
+  </el-dialog>
 </template>
 
 <style scoped lang="scss">

@@ -31,7 +31,6 @@ export interface empInfoListResponse extends ResponseResult {
     data?: empInfoList
 }
 
-
 export interface empInfoListRequest {
     name?:string,
     gender?:number,

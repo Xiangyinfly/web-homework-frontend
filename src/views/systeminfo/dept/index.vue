@@ -100,9 +100,10 @@ const rules = {
 
 <template>
   <div>
-    <el-button type="primary" style="margin-bottom: 20px" @click="addDialog = true">新增部门</el-button>
 
     <el-card>
+      <el-button type="primary" style="margin-bottom: 20px" @click="addDialog = true">新增部门</el-button>
+
       <el-table :data="deptList" style="width: 100%">
         <el-table-column align="center" prop="id" label="序号" width="60" />
         <el-table-column align="center" prop="name" label="部门名称" width="500" />
