@@ -51,6 +51,16 @@ export const constantRoute = [
                     hidden: false,
                     icon: 'Notebook'
                 }
+            },
+            {
+                path: '/classinfo/clazz',
+                component: () => import('@/views/classinfo/clazz/index.vue'),
+                name: 'Clazz',
+                meta: {
+                    title: '班级管理',
+                    hidden: false,
+                    icon: 'Notebook'
+                }
             }
         ]
     },

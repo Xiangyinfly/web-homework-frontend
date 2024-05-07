@@ -197,12 +197,12 @@ const doDeleteBatchStu = async () => {
 
 //违纪处理
 const illegalDialog = ref(false)
-const stu = ref<Stu>()
 const num = ref(0)
 const doUpdateIllegal = async () => {
-  stu.value.illegalGrade += num.value
-  stu.value.illegalTime ++
-  let res:ResponseResult = await updateStu(stu.value)
+  await doGetStuById()
+  updateStuRequest.value.illegalGrade += num.value
+  updateStuRequest.value.illegalTime ++
+  let res:ResponseResult = await updateStu(updateStuRequest.value)
   if (res.code == 200) {
     await getStuInfoList(1,10)
     ElMessage.success("违纪处理成功😊")
@@ -240,21 +240,21 @@ const rules = {
         <span>学员姓名</span>
         <el-input
             v-model="stuInfoListRequest.name"
-            style="width: 240px;margin-left: 10px"
+            style="width: 200px;margin-left: 10px"
             placeholder="输入您的姓名"
             :prefix-icon="Search"
         />
 
-        <span style="margin-left: 40px">学号</span>
+        <span style="margin-left: 30px">学号</span>
         <el-input
             v-model="stuInfoListRequest.id"
-            style="width: 240px;margin-left: 10px"
+            style="width: 200px;margin-left: 10px"
             placeholder="输入您的姓名"
             :prefix-icon="Search"
         />
 
-        <span style="margin-left: 40px">最高学历</span>
-        <el-select v-model="stuInfoListRequest.education" placeholder="选择学历" style="width: 240px;margin-left: 10px">
+        <span style="margin-left: 30px">最高学历</span>
+        <el-select v-model="stuInfoListRequest.education" placeholder="选择学历" style="width: 200px;margin-left: 10px">
           <el-option
               v-for="item in eduOptions"
               :key="item.value"
@@ -263,8 +263,8 @@ const rules = {
           />
         </el-select>
 
-        <span style="margin-left: 40px">所属班级</span>
-        <el-select v-model="stuInfoListRequest.clazz" placeholder="选择班级" style="width: 240px;margin-left: 10px">
+        <span style="margin-left: 30px">所属班级</span>
+        <el-select v-model="stuInfoListRequest.clazz" placeholder="选择班级" style="width: 200px;margin-left: 10px">
           <el-option
               v-for="item in clazzOptions"
               :key="item.value"
@@ -287,20 +287,20 @@ const rules = {
           @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55" />
-        <el-table-column property="name" label="姓名" width="150"></el-table-column>
+        <el-table-column property="name" label="姓名" width="100"></el-table-column>
         <el-table-column property="id" label="学号" width="150"></el-table-column>
         <el-table-column property="clazz" label="班级" width="150"></el-table-column>
-        <el-table-column property="gender" label="性别" width="150"></el-table-column>
+        <el-table-column property="gender" label="性别" width="100"></el-table-column>
         <el-table-column property="phone" label="手机号" width="150"></el-table-column>
-        <el-table-column property="education" label="最高学历" width="150"></el-table-column>
-        <el-table-column property="illegalTime" label="违纪次数" width="150"></el-table-column>
-        <el-table-column property="illegalGrade" label="违纪扣分" width="150"></el-table-column>
+        <el-table-column property="education" label="最高学历" width="100"></el-table-column>
+        <el-table-column property="illegalTime" label="违纪次数" width="100"></el-table-column>
+        <el-table-column property="illegalGrade" label="违纪扣分" width="100"></el-table-column>
         <el-table-column property="updateTime" label="最后操作时间" show-overflow-tooltip />
-        <el-table-column align="center" fixed="right" label="操作" width="200">
+        <el-table-column align="center" fixed="right" label="操作" width="150">
           <template #default="scope">
             <el-button link type="primary" size="small" @click="updateDialog = true;stuId = scope.row.id;getClazzOptions();doGetStuById()">编辑</el-button>
             <el-button link type="danger" size="small" @click="deleteDialog = true;stuId = scope.row.id">删除</el-button>
-            <el-button link type="danger" size="small" @click="illegalDialog = true;stu = scope.row">违纪</el-button>
+            <el-button link type="danger" size="small" @click="illegalDialog = true;stuId = scope.row.id">违纪</el-button>
           </template>
         </el-table-column>
       </el-table>
