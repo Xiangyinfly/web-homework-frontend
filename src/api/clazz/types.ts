@@ -8,8 +8,6 @@ export interface clazz {
     id?: number,
     name?: string,
     classroom?: string,
-    startTime?: string,
-    endTime?: string,
     headTeacher?: string
 }
 
@@ -29,8 +27,6 @@ export interface clazzInfoListResponse extends ResponseResult {
 
 export interface clazzInfoListRequest {
     name?: string,
-    startTime?: string,
-    endTime?: string,
     page?: number,
     pageSize?: number
 }

@@ -5,6 +5,8 @@ import {ElMessage, ElTable} from "element-plus";
 import {ResponseResult, Stu, StuInfoList, StuInfoListRequest} from "@/api/stu/types.ts";
 import {reactive, ref} from "vue";
 import {addStu, deleteBatchStu, getStuById, reqStuInfoList, updateStu} from "@/api/stu";
+import {clazzInfoListResponse} from "@/api/clazz/types.ts";
+import {getClazzInfoList} from "@/api/clazz";
 
 //获得职员信息列表
 const stuTableRef = ref<InstanceType<typeof ElTable>>()
@@ -39,9 +41,28 @@ const eduOptions = [
     label: '博士',
   },
 ]
+let clazzOptions = ref<Option[]>([])
+interface Option {
+  value?: string | number,
+  label?: string,
+}
 
-//TODO 得到班级
+const getClazzOptions = async () => {
 
+  let res: ResponseResult = await getClazzInfoList()
+  if (res.code == 200) {
+    res.data.forEach(clazz => {
+      let clazzOption: Option = {}
+      clazzOption.value = clazz.id
+      clazzOption.label = clazz.name
+      clazzOptions.value.push(clazzOption)
+    })
+  } else {
+    return Promise.reject(new Error(res.msg))
+  }
+
+}
+getClazzOptions()
 
 let stuInfoListRequest:StuInfoListRequest = reactive({})
 let stuListPage = reactive<StuInfoList>({})
@@ -81,6 +102,16 @@ const getStuInfoList = async (page:number, pageSize:number) => {
 
 getStuInfoList(1,10)
 
+const getClazzName = (id) => {
+  let className = ""
+  clazzOptions.value.forEach(clazz => {
+    if (clazz.value === id) {
+      className = clazz.label
+    }
+  })
+  return className
+}
+
 const handleSizeChange = (val: number) => {
   getStuInfoList(stuInfoListRequest.page as number,val)
 }
@@ -89,28 +120,7 @@ const handleCurrentChange = (val: number) => {
 }
 
 //添加员工
-let clazzOptions = ref<Option[]>([])
-interface Option {
-  value?: string | number,
-  label?: string,
-}
 
-//TODO get clazz
-const getClazzOptions = async () => {
-
-  // let res: DeptInfoListResponse = await getDeptList()
-  // if (res.code == 200) {
-  //   res.data.forEach(dept => {
-  //     let deptOption: deptOption = {}
-  //     deptOption.value = dept.id
-  //     deptOption.label = dept.name
-  //     deptOptions.value.push(deptOption)
-  //   })
-  // } else {
-  //   return Promise.reject(new Error(res.msg))
-  // }
-
-}
 
 const addDialog = ref(false)
 let addStuRequest = reactive<Stu>({})
@@ -249,7 +259,7 @@ const rules = {
         <el-input
             v-model="stuInfoListRequest.id"
             style="width: 200px;margin-left: 10px"
-            placeholder="输入您的姓名"
+            placeholder="输入您的学号"
             :prefix-icon="Search"
         />
 
@@ -289,7 +299,11 @@ const rules = {
         <el-table-column type="selection" width="55" />
         <el-table-column property="name" label="姓名" width="100"></el-table-column>
         <el-table-column property="id" label="学号" width="150"></el-table-column>
-        <el-table-column property="clazz" label="班级" width="150"></el-table-column>
+        <el-table-column property="clazz" label="班级" width="150">
+          <template #default="scope">
+            <span>{{ getClazzName(scope.row.clazz) }}</span>
+          </template>
+        </el-table-column>
         <el-table-column property="gender" label="性别" width="100"></el-table-column>
         <el-table-column property="phone" label="手机号" width="150"></el-table-column>
         <el-table-column property="education" label="最高学历" width="100"></el-table-column>

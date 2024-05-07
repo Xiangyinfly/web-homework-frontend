@@ -98,6 +98,39 @@ export const constantRoute = [
         ]
     },
     {
+        path: '/courseinfo',
+        component: () => import('@/layout/index.vue'),
+        name: 'CourseInfo',
+        redirect: '/courseinfo/manage',
+        meta: {
+            title: '课程信息管理',
+            hidden: false,
+            icon: 'Goods',
+        },
+        children: [
+            {
+                path: '/courseinfo/manage',
+                component: () => import('@/views/courseinfo/manage/index.vue'),
+                name: 'Manage',
+                meta: {
+                    title: '课程管理',
+                    hidden: false,
+                    icon: 'Notebook'
+                }
+            },
+            {
+                path: '/courseinfo/arrange',
+                component: () => import('@/views/courseinfo/arrange/index.vue'),
+                name: 'Arrange',
+                meta: {
+                    title: '课程安排',
+                    hidden: false,
+                    icon: 'Orange'
+                }
+            }
+        ]
+    },
+    {
         path: '/404',
         component: () => import('@/views/404/index.vue'),
         name: '404',

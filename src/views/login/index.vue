@@ -33,10 +33,10 @@ const login = async () => {
 
 const rules = {
   username: [
-    { required: true, min: 3, max: 18, message: 'Length should be 3 to 18', trigger: 'change' }
+    { required: true, min: 3, max: 18, message: '用户名应为3-18个字符', trigger: 'change' }
   ],
   password: [
-    { required: true, min: 6, max: 18, message: 'Length should be 6 to 18', trigger: 'change' }
+    { required: true, min: 6, max: 18, message: '密码应为6-18个字符', trigger: 'change' }
   ]
 }
 
@@ -62,7 +62,7 @@ let loginData = reactive({
             <el-input :prefix-icon="Lock" type="password" v-model="loginData.password" show-password></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button class="login_btn" type="primary" size="default" :loading="loading" @click="login">Sign in</el-button>
+            <el-button class="login_btn" type="primary" size="default" :loading="loading" @click="login">登录</el-button>
           </el-form-item>
         </el-form>
       </el-col>

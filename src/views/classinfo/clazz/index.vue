@@ -4,9 +4,7 @@ import {Search} from "@element-plus/icons-vue";
 import {ElMessage, ElTable} from "element-plus";
 import {ResponseResult, Stu, StuInfoList, StuInfoListRequest} from "@/api/stu/types.ts";
 import {reactive, ref} from "vue";
-import {addStu, deleteBatchStu, getStuById, reqStuInfoList, updateStu} from "@/api/stu";
 import {clazz, clazzInfoList, clazzInfoListRequest} from "@/api/clazz/types.ts";
-import {empInfoListResponse} from "@/api/emp/types.ts";
 import {getHeaderTeacherInfoList, reqEmpInfoList} from "@/api/emp";
 import {addClazz, deleteClazz, getClazzById, reqClazzInfoList, updateClazz} from "@/api/clazz";
 
@@ -15,7 +13,7 @@ import {addClazz, deleteClazz, getClazzById, reqClazzInfoList, updateClazz} from
 
 const getHeadTeacherOptions = async () => {
 
-  let res: empInfoListResponse = await getHeaderTeacherInfoList()
+  let res: ResponseResult = await getHeaderTeacherInfoList()
   if (res.code == 200) {
     res.data.forEach(ht => {
       let htOption: Option = {}
