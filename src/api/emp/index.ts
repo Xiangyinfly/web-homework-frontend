@@ -16,6 +16,9 @@ enum API {
     DELETE_BATCH_EMP_URL = '/emp',
     GET_HEAD_TEACHER_URL = '/emp/htlist',
     GET_ALL_EMP_URL = '/emp/listall',
+    GET_EMP_JOB_AGG_URL = "/emp/agg/job",
+    GET_EMP_DEPT_AGG_URL = "/emp/agg/dept",
+    GET_EMP_GENDER_AGG_URL = "/emp/agg/gender",
 }
 
 //获取用户信息
@@ -30,3 +33,6 @@ export const deleteEmp = (empId:string) => request.delete<any, any>(`/emp/${empI
 export const deleteBatchEmp = (empIds:number[]) => request.delete<any, any>(API.DELETE_BATCH_EMP_URL,{data:empIds})
 export const getHeaderTeacherInfoList = () => request.get<any, any>(API.GET_HEAD_TEACHER_URL)
 export const getEmpInfoList = () => request.get<any, any>(API.GET_ALL_EMP_URL)
+export const getEmpJobAgg = () => request.get<any, any>(API.GET_EMP_JOB_AGG_URL)
+export const getEmpDeptAgg = () => request.get<any, any>(API.GET_EMP_DEPT_AGG_URL)
+export const getEmpGenderAgg = () => request.get<any, any>(API.GET_EMP_GENDER_AGG_URL)

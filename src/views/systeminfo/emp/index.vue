@@ -2,10 +2,10 @@
 import {reactive, ref} from 'vue'
 import {ElMessage, ElTable} from 'element-plus'
 import {Search} from "@element-plus/icons-vue";
-import {addEmp, deleteBatchEmp, deleteEmp, getEmpById, reqEmpInfoList, reqUpload, updateEmp} from "@/api/emp";
+import {addEmp, deleteBatchEmp, deleteEmp, getEmpById, reqEmpInfoList, updateEmp} from "@/api/emp";
 import {AddEmpRequest, empInfo, empInfoList, empInfoListRequest, UpdateEmpRequest} from "@/api/emp/types.ts";
-import {AddDeptRequest, DeptInfoListResponse, ResponseResult} from "@/api/dept/types.ts";
-import {addDept, getDeptList} from "@/api/dept";
+import { DeptInfoListResponse, ResponseResult} from "@/api/dept/types.ts";
+import {getDeptList} from "@/api/dept";
 import { Plus } from '@element-plus/icons-vue'
 import type { UploadProps } from 'element-plus'
 import {useUserStore} from "@/store/modules/user.ts";

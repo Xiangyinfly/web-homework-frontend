@@ -2,10 +2,10 @@
 
 import {Search} from "@element-plus/icons-vue";
 import {ElMessage, ElTable} from "element-plus";
-import {ResponseResult, Stu, StuInfoList, StuInfoListRequest} from "@/api/stu/types.ts";
+import {ResponseResult} from "@/api/stu/types.ts";
 import {reactive, ref} from "vue";
 import {clazz, clazzInfoList, clazzInfoListRequest} from "@/api/clazz/types.ts";
-import {getHeaderTeacherInfoList, reqEmpInfoList} from "@/api/emp";
+import {getHeaderTeacherInfoList} from "@/api/emp";
 import {addClazz, deleteClazz, getClazzById, reqClazzInfoList, updateClazz} from "@/api/clazz";
 
 

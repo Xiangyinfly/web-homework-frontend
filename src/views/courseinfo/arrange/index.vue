@@ -2,22 +2,16 @@
 
 import {Plus, Search} from "@element-plus/icons-vue";
 import {ElMessage, ElTable} from "element-plus";
-import {ResponseResult, Stu, StuInfoList, StuInfoListRequest} from "@/api/stu/types.ts";
+import {ResponseResult} from "@/api/stu/types.ts";
 import {reactive, ref} from "vue";
-import {addStu, deleteBatchStu, getStuById, reqStuInfoList, updateStu} from "@/api/stu";
-import {clazzInfoListResponse} from "@/api/clazz/types.ts";
-import {getClazzInfoList} from "@/api/clazz";
 import {
   CourseEmp,
   CourseEmpList,
   CourseEmpListRequest,
-  CourseEmpListResponse,
   CourseEmpResponse
 } from "@/api/arrange/types.ts";
 import {addCourseEmp, deleteCourseEmp, reqCourseEmpList} from "@/api/arrange";
-import {Course, CourseInfoListRequest, CourseInfoResponse} from "@/api/manage/types.ts";
-import {getCourseList, reqCourseInfoList} from "@/api/manage";
-import {empInfoListRequest, empInfoListResponse} from "@/api/emp/types.ts";
+import {getCourseList} from "@/api/manage";
 import {getEmpInfoList} from "@/api/emp";
 
 //获得职员信息列表

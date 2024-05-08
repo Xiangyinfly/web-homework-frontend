@@ -1,11 +1,10 @@
 <script setup lang="ts">
 
-import {Plus, Search} from "@element-plus/icons-vue";
+import { Search} from "@element-plus/icons-vue";
 import {ElMessage, ElTable} from "element-plus";
 import {ResponseResult, Stu, StuInfoList, StuInfoListRequest} from "@/api/stu/types.ts";
 import {reactive, ref} from "vue";
 import {addStu, deleteBatchStu, getStuById, reqStuInfoList, updateStu} from "@/api/stu";
-import {clazzInfoListResponse} from "@/api/clazz/types.ts";
 import {getClazzInfoList} from "@/api/clazz";
 
 //获得职员信息列表

@@ -2,11 +2,8 @@
 
 import {Plus, Search} from "@element-plus/icons-vue";
 import {ElMessage, ElTable} from "element-plus";
-import {ResponseResult, Stu, StuInfoList, StuInfoListRequest} from "@/api/stu/types.ts";
+import {ResponseResult} from "@/api/stu/types.ts";
 import {reactive, ref} from "vue";
-import {addStu, deleteBatchStu, getStuById, reqStuInfoList, updateStu} from "@/api/stu";
-import {clazzInfoListResponse} from "@/api/clazz/types.ts";
-import {getClazzInfoList} from "@/api/clazz";
 import {Course, CourseInfoList, CourseInfoListRequest} from "@/api/manage/types.ts";
 import {addCourse, deleteCourse, getCourseById, reqCourseInfoList, updateCourse} from "@/api/manage";
 

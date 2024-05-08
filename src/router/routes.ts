@@ -131,6 +131,39 @@ export const constantRoute = [
         ]
     },
     {
+        path: '/datashow',
+        component: () => import('@/layout/index.vue'),
+        name: 'DataShow',
+        redirect: '/datashow/emp',
+        meta: {
+            title: '数据统计管理',
+            hidden: false,
+            icon: 'Goods',
+        },
+        children: [
+            {
+                path: '/datashow/emp',
+                component: () => import('@/views/datashow/emp/index.vue'),
+                name: 'EmpInfo',
+                meta: {
+                    title: '员工信息统计',
+                    hidden: false,
+                    icon: 'Notebook'
+                }
+            },
+            {
+                path: '/datashow/stu',
+                component: () => import('@/views/datashow/stu/index.vue'),
+                name: 'StuInfo',
+                meta: {
+                    title: '学生信息管理',
+                    hidden: false,
+                    icon: 'Orange'
+                }
+            }
+        ]
+    },
+    {
         path: '/404',
         component: () => import('@/views/404/index.vue'),
         name: '404',

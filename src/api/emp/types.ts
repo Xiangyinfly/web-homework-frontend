@@ -74,3 +74,8 @@ export interface UpdateEmpRequest {
     entryDate?: string,
     deptId?: number
 }
+
+export interface EmpJobAgg {
+    jobCount: number,
+    job: number
+}
