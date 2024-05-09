@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import {useUserStore} from "@/store/modules/user.ts";
-let userStore = useUserStore()
 </script>
 
 <template>
   <el-card>
-111
+    <h1>欢迎来到培训管理系统🏠</h1>
   </el-card>
 </template>
 

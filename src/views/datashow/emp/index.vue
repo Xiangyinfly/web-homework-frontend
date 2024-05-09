@@ -192,12 +192,15 @@ getGenderChart()
 
 <template>
   <div :style="{ width: '568px', height: '360px' }">
+    <h1>员工职位分布</h1>
     <Echarts :option="jobOption" />
   </div>
   <div :style="{ width: '568px', height: '360px' }">
+    <h1>员工部门分布</h1>
     <Echarts :option="deptOption" />
   </div>
   <div :style="{ width: '568px', height: '360px' }">
+    <h1>员工性别分布</h1>
     <Echarts :option="genderOption" />
   </div>
 </template>

@@ -41,7 +41,7 @@ const rules = {
 }
 
 let loginData = reactive({
-  username:'jinyong',
+  username:'111111',
   password:'123456'
 })
 
