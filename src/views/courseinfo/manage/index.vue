@@ -75,13 +75,13 @@ const doUpdateCourse = async () => {
   let res: ResponseResult = await updateCourse(updateCourseRequest.value)
   if (res.code == 200) {
     await getCourseInfoList(1,10)
-    ElMessage.success("添加成功😊")
+    ElMessage.success("修改成功😊")
 
     Object.keys(updateCourseRequest.value).map(key => {
       delete updateCourseRequest.value[key]
     })
   } else {
-    ElMessage.error("添加失败☹️")
+    ElMessage.error("修改失败☹️")
   }
 }
 
@@ -117,6 +117,8 @@ const rules = {
     <el-card>
 
       <div class="flex gap-4 mb-4">
+
+
 
         <span>课程名</span>
         <el-input
@@ -204,7 +206,7 @@ const rules = {
       width="500"
   >
     <el-form label-width="auto" style="max-width: 600px" :model="updateCourseRequest" :rules="rules" ref="updateCourseForm">
-      <el-form-item label="课程号" prop="id">
+      <el-form-item label="课程号" prop="id" v-show="false">
         <el-input v-model="updateCourseRequest.id" placeholder="请输入课程号，长度为8个字符，不可重复"/>
       </el-form-item>
       <el-form-item label="课程名" prop="name">

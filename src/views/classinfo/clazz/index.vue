@@ -116,13 +116,13 @@ const doUpdateClazz = async () => {
   let res: ResponseResult = await updateClazz(updateClazzRequest.value)
   if (res.code == 200) {
     await getClazzInfoList(1,10)
-    ElMessage.success("添加成功😊")
+    ElMessage.success("修改成功😊")
 
     Object.keys(updateClazzRequest.value).map(key => {
       delete updateClazzRequest.value[key]
     })
   } else {
-    ElMessage.error("添加失败☹️")
+    ElMessage.error("修改失败☹️")
   }
 }
 

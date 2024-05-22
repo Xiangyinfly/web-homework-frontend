@@ -50,12 +50,15 @@ const getClazzOptions = async () => {
 
   let res: ResponseResult = await getClazzInfoList()
   if (res.code == 200) {
+    let clazzOpt: Option[] = []
     res.data.forEach(clazz => {
       let clazzOption: Option = {}
       clazzOption.value = clazz.id
       clazzOption.label = clazz.name
-      clazzOptions.value.push(clazzOption)
+
+      clazzOpt.push(clazzOption)
     })
+    clazzOptions.value = clazzOpt
   } else {
     return Promise.reject(new Error(res.msg))
   }
@@ -118,7 +121,6 @@ const handleCurrentChange = (val: number) => {
   getStuInfoList(val,stuInfoListRequest.pageSize as number)
 }
 
-//添加员工
 
 
 const addDialog = ref(false)
@@ -140,7 +142,6 @@ const doAddStu = async () => {
   }
 }
 
-//修改员工
 const updateDialog = ref()
 const stuId = ref()
 let updateStuRequest = ref<Stu>({})
@@ -149,6 +150,17 @@ const doGetStuById = async () => {
   let res:ResponseResult = await getStuById(stuId.value)
   if (res.code == 200) {
     updateStuRequest.value = res.data
+    genderOptions.forEach(gender => {
+      if (gender.value == updateStuRequest.value.gender) {
+        updateStuRequest.value.gender = gender.value
+      }
+    })
+
+    eduOptions.forEach(edu => {
+      if (edu.value == updateStuRequest.value.education) {
+        updateStuRequest.value.education = edu.value
+      }
+    })
   }
 }
 
@@ -158,18 +170,17 @@ const doUpdateStu = async () => {
   let res: ResponseResult = await updateStu(updateStuRequest.value)
   if (res.code == 200) {
     await getStuInfoList(1,10)
-    ElMessage.success("添加成功😊")
+    ElMessage.success("修改成功😊")
 
     Object.keys(updateStuRequest.value).map(key => {
       delete updateStuRequest.value[key]
     })
   } else {
-    ElMessage.error("添加失败☹️")
+    ElMessage.error("修改失败☹️")
   }
 }
 
 
-// 删除员工
 const deleteDialog = ref(false)
 
 const doDeleteStu = async () => {
@@ -215,6 +226,7 @@ const doUpdateIllegal = async () => {
   if (res.code == 200) {
     await getStuInfoList(1,10)
     ElMessage.success("违纪处理成功😊")
+    num.value = 0
   } else {
     ElMessage.error("违纪处理失败☹️")
   }
@@ -457,7 +469,7 @@ const rules = {
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="deleteDialog = false">取消</el-button>
-        <el-button type="primary" @click="doDeleteStu">确定</el-button>
+        <el-button type="primary" @click="doDeleteStu()">确定</el-button>
       </div>
     </template>
   </el-dialog>
@@ -471,7 +483,7 @@ const rules = {
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="deleteBatchDialog = false">取消</el-button>
-        <el-button type="primary" @click="doDeleteBatchStu">确定</el-button>
+        <el-button type="primary" @click="doDeleteBatchStu();deleteBatchDialog = false">确定</el-button>
       </div>
     </template>
   </el-dialog>
@@ -487,7 +499,7 @@ const rules = {
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="illegalDialog = false">取消</el-button>
-        <el-button type="primary" @click="doUpdateIllegal">确定</el-button>
+        <el-button type="primary" @click="doUpdateIllegal();illegalDialog = false">确定</el-button>
       </div>
     </template>
   </el-dialog>

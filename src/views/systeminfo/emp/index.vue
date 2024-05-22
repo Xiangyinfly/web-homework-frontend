@@ -114,12 +114,14 @@ const getDeptOptions = async () => {
 
   let res: DeptInfoListResponse = await getDeptList()
   if (res.code == 200) {
+    let deptOpt: deptOption[] = []
     res.data.forEach(dept => {
       let deptOption: deptOption = {}
       deptOption.value = dept.id
       deptOption.label = dept.name
-      deptOptions.value.push(deptOption)
+      deptOpt.push(deptOption)
     })
+    deptOptions.value = deptOpt
   } else {
     return Promise.reject(new Error(res.msg))
   }
@@ -192,6 +194,16 @@ const doGetEmpById = async () => {
   let res:ResponseResult = await getEmpById(empId.value)
   if (res.code == 200) {
     updateEmpRequest.value = res.data as UpdateEmpRequest
+    genderOptions.forEach(gender => {
+      if (gender.value == updateEmpRequest.value.gender) {
+        updateEmpRequest.value.gender = gender.value
+      }
+    })
+    jobOptions.forEach(job => {
+      if (job.value == updateEmpRequest.value.job) {
+        updateEmpRequest.value.job = job.value
+      }
+    })
   }
 }
 
@@ -201,13 +213,13 @@ const doUpdateEmp = async () => {
   let res: ResponseResult = await updateEmp(updateEmpRequest.value)
   if (res.code == 200) {
     await getEmpInfoList(1,10)
-    ElMessage.success("添加成功😊")
+    ElMessage.success("修改成功😊")
 
     Object.keys(updateEmpRequest.value).map(key => {
       delete updateEmpRequest.value[key]
     })
   } else {
-    ElMessage.error("添加失败☹️")
+    ElMessage.error("修改失败☹️")
   }
 }
 
